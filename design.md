@@ -1,0 +1,94 @@
+# y2c
+
+## Description
+
+Automatically import events from Github repos into Google Calendar.
+
+## Overview
+
+Github Action that reads event data from specific YAML files (`y2c.yml`) in a GitHub repo and calls the Google Calendar API to create/update events. The action is only triggered when master is pushed and the files containing event data change. Event attendees can either be individual's email addresses or a Google Group email address.
+
+
+## Not in scope
+
+* Managing members of the Google Groups. If members need to be added to the Google Group, this will need to happen via the Google Groups UI.
+* Creating/Updating events on groups.io
+* Using Groups from groups.io.
+
+## Format of event files (`y2c.yml`)
+
+```yaml
+id: 'event-id'
+organizer: 'dan@linuxfoundation.com' # email address of the organizer
+calendarId: 'calendar-id'           # Calendar Identifier
+title: 'Event title'
+description: 'Event Description'
+location: 'zoom-url'                # Are we using the Zoom URL as location?
+start:
+  date: '2020-02-10'                # Event start date
+  time: '9:00am'                    # Event start time
+  timeZone: 'America/New_York'
+end:
+  date: '2020-02-10'                # Event end date
+  time: '11:00am'                   # Event end time
+  timeZone: 'America/New_York'
+attendees:
+  - email: joe@example.com          # Guest email
+    name: 'Joe User'                # Guest name (optional)
+  - email: jane@example.com
+    name: 'Jane User'
+reminders:
+  - method: 'email'                 # Send email reminder 10 minutes before event
+    minutes: 10
+  - method: 'popup'                 # Show popup reminder 1 hour before event
+    minutes: 60
+```
+
+#### Notes
+* The user will have to specify an event ID, so changes to the `y2c.yml` file trigger an update on Google Calendar, instead of creating a new event. The user will have to remember not to change the eventId once set, otherwise a new event would be created on Google Calendar.
+* The user will have to specify the Calendar Identifier where the event will be created. The organizer must have access to that calendar.
+* Not sure we care about setting attendee names.
+* Not sure we want to allow users to configure the event's reminders or we want to set the same policy for all events.
+
+## Authorizing requests to the Google Calendar API
+
+The Google Calendar API uses OAuth 2.0, in order to make requests to it in a GitHub action we will have to use [OAuth 2.0 for Server to Server Applications](https://developers.google.com/identity/protocols/OAuth2ServiceAccount). This requires creating a _Service Account_. If we want this _Service Account_ to create events in other users' calendars or on behalf of other users we will have to grant _domain-wide authority_ to the _Service Account_.
+
+At the end of this process a private key file will be generated, the contents of this file will have to be pasted in the [secrets section](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets) on github for each repo so it can be used by the Github Action.
+
+#### Notes:
+* Not sure if we should generate a different private key for each repo or it's fine to re-use the same key for all repos.
+
+## GitHub Action Configuration
+
+To trigger the GitHub action on a repo we will have to add a workflow file in the repo under `.github/workflows`, name is irrelevant, so it could be `.github/workflows/y2c.yml`.
+
+```yaml
+name: Save Calendars
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**/y2c.yml'
+jobs:
+  build:
+    name: Save Calendars
+    runs-on: ubuntu-latest
+    steps:
+      - name: Y2C
+        uses: cncf/y2c@master
+        env:
+          google_api_secret: ${{ secrets.google_api_secret }} # Secret obtained when creating service acct
+```
+
+The configuration above will trigger the `cncf/y2c` action when there's a push to master that changes one of the `y2c.yml` files. `google_api_secret` will be set as an environment variable.
+
+## Implementation of the GitHub Action
+
+At the higher level the GitHub action will have to:
+
+* Check which `y2c.yml` files have changed (or maybe this can be done in the workflow file and pass them as arguments).
+* For each file that changed check if corresponding event exists in Google Calendar (by ID).
+* If event does not exist on Google Calendar, create it.
+* If it does update it.
