@@ -35,11 +35,6 @@ attendees:
     name: 'Joe User'                # Guest name (optional)
   - email: jane@example.com
     name: 'Jane User'
-reminders:
-  - method: 'email'                 # Send email reminder 10 minutes before event
-    minutes: 10
-  - method: 'popup'                 # Show popup reminder 1 hour before event
-    minutes: 60
 ```
 
 #### Notes
