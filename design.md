@@ -6,7 +6,7 @@ Automatically import events from Github repos into Google Calendar.
 
 ## Overview
 
-[Probot](https://probot.github.io) (GitHub App) that reads event data from specific YAML files (`y2c.yml`) in a GitHub repo and calls the Google Calendar API to create/update events. Event attendees can either be individual's email addresses, a Google Group email addresses or a groups.io groups. Note that when adding a new member to group.io won't automatically trigger an invitation to the new member.
+[Probot](https://probot.github.io) (GitHub App) that reads event data from specific YAML files (`y2c.yml`) in a GitHub repo and calls the Google Calendar API to create/update events. Event attendees can either be individual's email addresses, Google Group email addresses or groups.io groups. Note that when adding a new member to groups.io won't automatically trigger an invitation to the new member.
 
 ## Not in scope
 
@@ -49,11 +49,11 @@ attendees:
 
 The Google Calendar API uses OAuth 2.0, in order to make requests to it from a GitHub App we will have to use [OAuth 2.0 for Server to Server Applications](https://developers.google.com/identity/protocols/OAuth2ServiceAccount). This requires creating a _Service Account_. If we want this _Service Account_ to create events in other users' calendars or on behalf of other users we will have to grant _domain-wide authority_ to the _Service Account_.
 
-If CNCF and Kubernetes belong to the LF account on Google, we might be able to just authorize once `y2c` for LF and that would give access to both organizations. Otherwise, we will have to create a service account for each organization, obtain the respective private key files and add the files to `y2c`.
+For each organization on Google (CNCF, Kubernetes, ...) that needs to grant access to `y2c` we will have to create a service account, obtain the private key file and add it to `y2c`.
 
 ## Adding Probot to a GitHub repo
 
-The Probot will be added to organizations (CNCF and Kubernetes for now), which will grant access to all repos in that org.
+The Probot will be added to organizations (CNCF and Kubernetes for now) on GitHub, which will grant access to all repos in that org.
 
 ## Implementation of the Probot
 
