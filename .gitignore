@@ -59,3 +59,12 @@ typings/
 
 # next.js build output
 .next
+node_modules
+npm-debug.log
+*.pem
+!mock-cert.pem
+.env
+package-lock.json
+coverage
+
+credentials.json
