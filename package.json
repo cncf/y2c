@@ -14,20 +14,20 @@
     "probot-app"
   ],
   "scripts": {
-    "dev": "nodemon",
-    "start": "node ./lib/app.js",
+    "dev": "concurrently --kill-others \"nodemon\" \"yarn run webpack\"",
+    "webpack": "cd frontend && yarn start",
+    "start": "probot run ./lib/app.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
     "@octokit/auth-oauth-app": "^2.2.1",
-    "cookie-session": "^1.4.0",
-    "ejs": "^3.0.1",
     "googleapis": "^46.0.0",
     "probot": "^9.5.3"
   },
   "devDependencies": {
+    "concurrently": "^5.0.2",
     "jest": "^24.9.0",
     "nock": "^11.4.0",
     "nodemon": "^2.0.0",
@@ -40,14 +40,14 @@
   "standard": {
     "env": [
       "jest"
+    ],
+    "ignore": [
+      "/frontend/"
     ]
   },
   "nodemonConfig": {
-    "exec": "npm start",
-    "watch": [
-      ".env",
-      "."
-    ]
+    "exec": "yarn start",
+    "ignore": ["node_modules/", "frontend/"]
   },
   "jest": {
     "testEnvironment": "node"
