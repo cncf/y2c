@@ -4,6 +4,7 @@ import Home from './components/Home'
 import GithubOauthCallback from './components/GithubOauthCallback'
 import GoogleOauthCallback from './components/GoogleOauthCallback'
 import GoogleSignIn from './components/GoogleSignIn'
+import Webhooks from './components/Webhooks'
 import history from './history';
 import AuthContext from './contexts/AuthContext'
 import authReducer from './reducers/authReducer'
@@ -23,6 +24,7 @@ export default () => {
           <Route path="/github/oauth-callback" component={GithubOauthCallback}/>
           <Route path="/google/oauth-callback" component={GoogleOauthCallback}/>
           <Route path="/google/sign-in" component={GoogleSignIn}/>
+          <Route path="/webhooks" component={Webhooks}/>
         </Switch>
       </Router>
     </AuthContext.Provider>

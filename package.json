@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "concurrently --kill-others \"nodemon\" \"yarn run webpack\"",
     "webpack": "cd frontend && yarn start",
-    "start": "probot run ./lib/app.js",
+    "start": "NODE_PATH=./lib probot run ./lib/app.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
@@ -24,6 +24,8 @@
   "dependencies": {
     "@octokit/auth-oauth-app": "^2.2.1",
     "googleapis": "^46.0.0",
+    "knex": "^0.20.8",
+    "pg": "^7.17.1",
     "probot": "^9.5.3"
   },
   "devDependencies": {
@@ -47,9 +49,15 @@
   },
   "nodemonConfig": {
     "exec": "yarn start",
-    "ignore": ["node_modules/", "frontend/"]
+    "ignore": [
+      "node_modules/",
+      "frontend/"
+    ]
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "exports": {
+
   }
 }
