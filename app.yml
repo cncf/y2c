@@ -15,3 +15,5 @@ default_events:
 
 default_permissions:
   contents: write
+
+public: false
