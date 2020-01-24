@@ -14,9 +14,9 @@
     "probot-app"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others \"nodemon\" \"yarn run webpack\"",
-    "webpack": "cd frontend && yarn start",
-    "start": "NODE_PATH=./lib probot run ./lib/app.js",
+    "dev": "concurrently --kill-others \"nodemon\" \"yarn run client-dev\"",
+    "client-dev": "cd client && yarn start",
+    "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
@@ -44,14 +44,14 @@
       "jest"
     ],
     "ignore": [
-      "/frontend/"
+      "/client/"
     ]
   },
   "nodemonConfig": {
     "exec": "yarn start",
     "ignore": [
       "node_modules/",
-      "frontend/"
+      "client/"
     ]
   },
   "jest": {
