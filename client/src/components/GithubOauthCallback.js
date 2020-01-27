@@ -9,7 +9,7 @@ export default ({ location }) => {
 
   const authenticate = async () => {
     setAuthenticating(true)
-    const url = `/github/oauth-callback${search}`
+    const url = `/api/github/oauth-callback${search}`
     const response = await fetch(url)
     const { token, login } = await response.json()
     dispatch({

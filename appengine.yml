@@ -1,0 +1,7 @@
+runtime: nodejs
+env: flex
+skip_files:
+  - node_modules/
+  - client/
+  - credentials.json
+  - .env

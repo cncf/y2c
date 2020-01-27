@@ -1,12 +1,26 @@
+const path = require('path')
+const express = require('express');
 const { homeRouter, googleRouter, githubRouter } = require('routers')
 const { pushWebhook } = require('webhooks')
 
 module.exports = app => {
   app.on('push', pushWebhook)
 
-  const router = app.route('/')
+  const apiRouter = app.route('/api')
 
-  router.use(homeRouter)
-  router.use('/github', githubRouter)
-  router.use('/google', googleRouter)
+  apiRouter.use(homeRouter)
+  apiRouter.use('/github', githubRouter)
+  apiRouter.use('/google', googleRouter)
+
+  if (process.env.NODE_ENV === 'production') {
+    const baseRouter = app.route('/')
+
+    // app.set('trust proxy', true);
+
+    baseRouter.use(express.static(path.join(__dirname, '..', 'build')));
+
+    baseRouter.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '..',  'build', 'index.html'));
+    })
+  }
 }

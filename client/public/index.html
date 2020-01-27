@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
     <title>React App</title>
+    <script>
+      window.REACT_APP_SETTINGS = {};
+
+      const fetchSettings = async () => {
+        const response = await fetch('/api/settings')
+        window.REACT_APP_SETTINGS = await response.json()
+      }
+
+      if ('%NODE_ENV%' === 'development') {
+        fetchSettings()
+      }
+    </script>
 </head>
 <body>
 <noscript>

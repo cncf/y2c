@@ -14,14 +14,17 @@
     "probot-app"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others \"nodemon\" \"yarn run client-dev\"",
-    "client-dev": "cd client && yarn start",
-    "start": "NODE_PATH=./src probot run ./src/app.js",
+    "dev": "concurrently --kill-others \"nodemon\" \"yarn run client:dev\"",
+    "client:dev": "cd client && yarn start",
+    "client:build": "cd client && yarn run build",
+    "start": "yarn run production:prepare && NODE_PATH=./src probot run ./src/app.js",
+    "production:prepare": "./bin/download-env && ./bin/inject-client-settings",
     "lint": "standard --fix",
     "test": "jest && standard",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
+    "@google-cloud/storage": "^4.3.0",
     "@octokit/auth-oauth-app": "^2.2.1",
     "googleapis": "^46.0.0",
     "knex": "^0.20.8",
@@ -57,7 +60,5 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "exports": {
-
-  }
+  "exports": {}
 }

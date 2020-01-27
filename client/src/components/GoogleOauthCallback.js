@@ -9,7 +9,7 @@ export default ({ location }) => {
 
   const authenticate = async () => {
     setAuthenticating(true)
-    const url = `/google/oauth-callback${search}`
+    const url = `/api/google/oauth-callback${search}`
     const response = await fetch(url)
     const { email } = await response.json()
     dispatch({

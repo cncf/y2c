@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+rm -rf build
+yarn run client:build
+mv client/build build
+gcloud app deploy appengine.yml --quiet
+rm -rf build

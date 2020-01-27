@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+if (!process.env.GAE_SERVICE) {
+  return
+}
+
+const path = require('path')
+const { Storage } = require('@google-cloud/storage')
+const storage = new Storage()
+const bucket = storage.bucket('cncf-y2c.appspot.com')
+const file = bucket.file('dotenv')
+
+file.download({
+  destination: path.resolve(__dirname, '..', '.env')
+}, (err) => {
+  if (err) {
+    console.log(err)
+    process.exit(1)
+  }
+});

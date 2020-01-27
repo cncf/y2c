@@ -1,23 +1,16 @@
 const express = require('express')
-const Octokit = require('@octokit/rest')
 const db = require('db')
+const clientSettings = require('clientSettings')
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
-  if (req.session.githubToken) {
-    const octokit = Octokit({ auth: req.session.githubToken, previews: ['machine-man-preview'] })
-    const { data } = await octokit.request('GET /user/installations')
-    const { installations } = data
-    res.render('home.ejs', { currentUser: req.session.githubUser, installations })
-  } else {
-    res.redirect('/github/sign-in')
-  }
-})
-
-router.get('/api/webhooks', async (req, res) => {
+router.get('/webhooks', async (req, res) => {
   const webhooks = await db('webhooks').orderBy('created_at', 'desc')
   res.send(webhooks)
+})
+
+router.get('/settings', async (req, res) => {
+  res.send(clientSettings)
 })
 
 module.exports = router

@@ -4,12 +4,13 @@ import { stringify } from 'querystring'
 import AuthContext from '../contexts/AuthContext'
 
 export default () => {
+  const { GITHUB_CLIENT_ID } = window.REACT_APP_SETTINGS
   const { protocol, host } = window.location
   const [{ username, email }, dispatch] = useContext(AuthContext)
   const [installations, setInstallations] = useState([])
 
   const params = {
-    client_id: process.env.REACT_APP_CLIENT_ID,
+    client_id: GITHUB_CLIENT_ID,
     redirect_uri: `${protocol}//${host}/github/oauth-callback`
   }
 
@@ -17,7 +18,7 @@ export default () => {
 
   useEffect(() => {
     const fetchInstallations = async () => {
-      const response = await fetch(`/github/installations?token=${localStorage.token}`)
+      const response = await fetch(`/api/github/installations?token=${localStorage.token}`)
       const data = await response.json()
       setInstallations(data)
     }
@@ -37,7 +38,7 @@ export default () => {
       <div><a onClick={() => dispatch({ type: 'LOG_OUT' })}>Log Out</a></div>
       {
         installations.map(({ id, account }) => (
-          <div key={`installation/${id}`}><a href={`/installation/${id}`}>{account.login}</a></div>
+          <div key={`installation/${id}`}><a href={`/api/installation/${id}`}>{account.login}</a></div>
         ))
       }
     </div>
