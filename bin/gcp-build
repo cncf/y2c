@@ -5,4 +5,6 @@ set -e
 cp .env.production .env
 yarn run client:build
 cp -r client/build ./build
+gsutil -m rsync -r ./build/static gs://cncf-y2c.appspot.com/static
+gsutil acl ch -r -u AllUsers:R gs://cncf-y2c.appspot.com/static
 rm -rf client

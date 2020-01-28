@@ -4,7 +4,11 @@ require('dotenv').config()
 const path = require('path')
 const { writeFileSync } = require('fs')
 
-let vars = ['CLIENT_ID', 'GOOGLE_CLIENT_ID'].map((key) => `REACT_APP_${key}=${process.env[key]}`)
-vars.push('SKIP_PREFLIGHT_CHECK=true')
+const vars = [
+  `REACT_APP_CLIENT_ID=${process.env.CLIENT_ID}`,
+  `REACT_APP_GOOGLE_CLIENT_ID=${process.env.GOOGLE_CLIENT_ID}`,
+  'SKIP_PREFLIGHT_CHECK=true',
+  `PUBLIC_URL=${process.env.PUBLIC_URL}`
+]
 
 writeFileSync(path.resolve(__dirname, '..', 'client', '.env'), vars.join('\n'))
