@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+cp .env.production .env
+yarn run client:build
+cp -r client/build ./build
+rm -rf client

@@ -1,0 +1,6 @@
+node_modules/
+build/
+credentials.json
+.env
+.git
+.idea

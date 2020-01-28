@@ -4,13 +4,13 @@ import { stringify } from 'querystring'
 import AuthContext from '../contexts/AuthContext'
 
 export default () => {
-  const { GITHUB_CLIENT_ID } = window.REACT_APP_SETTINGS
+  const { REACT_APP_CLIENT_ID } = process.env
   const { protocol, host } = window.location
   const [{ username, email }, dispatch] = useContext(AuthContext)
   const [installations, setInstallations] = useState([])
 
   const params = {
-    client_id: GITHUB_CLIENT_ID,
+    client_id: REACT_APP_CLIENT_ID,
     redirect_uri: `${protocol}//${host}/github/oauth-callback`
   }
 

@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const path = require('path')
+const { writeFileSync } = require('fs')
+
+let vars = ['CLIENT_ID', 'GOOGLE_CLIENT_ID'].map((key) => `REACT_APP_${key}=${process.env[key]}`)
+vars.push('SKIP_PREFLIGHT_CHECK=true')
+
+writeFileSync(path.resolve(__dirname, '..', 'client', '.env'), vars.join('\n'))

@@ -27,11 +27,11 @@ export default () => {
       </tr>
       </thead>
       <tbody>
-      {webhooks.map(webhook => {
-        return <tr>
-          <td>{ webhook.id }</td>
-          <td>{ webhook.repo }</td>
-          <td>{ webhook.created_at }</td>
+      {webhooks.map(({ key, repo, created_at }) => {
+        return <tr key={key.id}>
+          <td>{ key.id }</td>
+          <td>{ repo }</td>
+          <td>{ created_at }</td>
         </tr>
       })}
       </tbody>

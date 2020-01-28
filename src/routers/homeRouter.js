@@ -1,16 +1,16 @@
 const express = require('express')
-const db = require('db')
-const clientSettings = require('clientSettings')
+const datastore = require('datastore')
 
 const router = express.Router()
 
 router.get('/webhooks', async (req, res) => {
-  const webhooks = await db('webhooks').orderBy('created_at', 'desc')
-  res.send(webhooks)
-})
-
-router.get('/settings', async (req, res) => {
-  res.send(clientSettings)
+  const query = datastore.createQuery('Webhook')
+  const response = await datastore.runQuery(query)
+  const webhooks = response[0].map(entity => {
+    const key = entity[datastore.KEY]
+    return { ...entity, key }
+  })
+  res.send(webhooks.reverse())
 })
 
 module.exports = router
