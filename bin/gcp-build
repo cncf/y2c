@@ -2,9 +2,12 @@
 
 set -e
 
+BUCKET=cncf-y2c.appspot.com
+FOLDER=$(date +%s)
+PUBLIC_URL=https://storage.googleapis.com/$BUCKET/$FOLDER
+
 cp .env.production .env
-yarn run client:build
+PUBLIC_URL=$PUBLIC_URL yarn run client:build
 cp -r client/build ./build
-gsutil -m rsync -r ./build/static gs://cncf-y2c.appspot.com/static
-gsutil acl ch -r -u AllUsers:R gs://cncf-y2c.appspot.com/static
+gsutil -h 'Cache-Control:public,max-age=31536000' cp -a public-read -r -Z ./build/static gs://$BUCKET/$FOLDER/static
 rm -rf client
