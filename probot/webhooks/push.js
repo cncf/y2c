@@ -1,5 +1,7 @@
 const { google } = require('googleapis/build/src/index')
-const datastore = require('datastore')
+const { Datastore } = require('@google-cloud/datastore');
+
+const datastore = new Datastore()
 
 const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/calendar']

@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+const { safeDump } = require('js-yaml')
+const [readPath, writePath] = process.argv.slice(2)
+const env = require('dotenv').config({ path: readPath }).parsed
+const { writeFileSync } = require('fs')
+writeFileSync(writePath, safeDump(env))

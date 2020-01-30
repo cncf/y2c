@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+envFile="./.env.yml"
+./bin/env-to-yaml ../.env.production $envFile
+gcloud functions deploy webhook --runtime nodejs10 --trigger-http --allow-unauthenticated --verbosity=info --env-vars-file=$envFile
+rm $envFile

@@ -1,10 +1,7 @@
 const path = require('path')
 const { homeRouter, googleRouter, githubRouter } = require('routers')
-const { pushWebhook } = require('webhooks')
 
 module.exports = app => {
-  app.on('push', pushWebhook)
-
   const apiRouter = app.route('/api')
 
   apiRouter.use(homeRouter)
