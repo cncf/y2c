@@ -1,20 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { stringify } from 'querystring'
 import AuthContext from '../contexts/AuthContext'
 
 export default () => {
-  const { REACT_APP_CLIENT_ID } = process.env
-  const { protocol, host } = window.location
   const [{ username, email }, dispatch] = useContext(AuthContext)
   const [installations, setInstallations] = useState([])
-
-  const params = {
-    client_id: REACT_APP_CLIENT_ID,
-    redirect_uri: `${protocol}//${host}/github/oauth-callback`
-  }
-
-  const url = `https://github.com/login/oauth/authorize?${stringify(params)}`
 
   useEffect(() => {
     const fetchInstallations = async () => {
@@ -23,12 +13,8 @@ export default () => {
       setInstallations(data)
     }
 
-    username && fetchInstallations()
+    fetchInstallations()
   }, [])
-
-  if (!username) {
-    return <div><a href={url}>Sign in</a></div>
-  }
 
   return (
     <div>
