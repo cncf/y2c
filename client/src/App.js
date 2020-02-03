@@ -11,6 +11,7 @@ import history from './history';
 import AuthContext from './contexts/AuthContext'
 import authReducer from './reducers/authReducer'
 import storage from './storage'
+import Container from '@material-ui/core/Container';
 
 export default () => {
   const initialState = storage.get('token', 'username', 'email')
@@ -20,16 +21,18 @@ export default () => {
 
   return (
     <AuthContext.Provider value={[{ token, username, email }, dispatch]}>
-      <Router history={history}>
-        <Switch>
-          <PrivateRoute exact path="/" component={Home}/>
-          <Route path="/github/oauth-callback" component={GithubOauthCallback}/>
-          <Route path="/github/sign-in" component={GithubSignIn}/>
-          <Route path="/google/oauth-callback" component={GoogleOauthCallback}/>
-          <PrivateRoute path="/google/sign-in" component={GoogleSignIn}/>
-          <PrivateRoute path="/webhooks" component={Webhooks}/>
-        </Switch>
-      </Router>
+      <Container>
+        <Router history={history}>
+          <Switch>
+            <PrivateRoute exact path="/" component={Home}/>
+            <Route path="/github/oauth-callback" component={GithubOauthCallback}/>
+            <Route path="/github/sign-in" component={GithubSignIn}/>
+            <Route path="/google/oauth-callback" component={GoogleOauthCallback}/>
+            <PrivateRoute path="/google/sign-in" component={GoogleSignIn}/>
+            <PrivateRoute path="/webhooks" component={Webhooks}/>
+          </Switch>
+        </Router>
+      </Container>
     </AuthContext.Provider>
   )
 }
