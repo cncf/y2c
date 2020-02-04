@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { stringify } from 'querystring'
+import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
+import GithubIcon from '@material-ui/icons/GitHub'
 
 export default () => {
   const { REACT_APP_CLIENT_ID } = process.env
@@ -12,7 +15,11 @@ export default () => {
 
   const url = `https://github.com/login/oauth/authorize?${stringify(params)}`
 
-  return <div>
-    <a href={url}>Sign in with Github</a>
-  </div>
+  const SignInButton = forwardRef(({ children, ...props}, ref) => <a href={url} {...props} ref={ref}>{children}</a>)
+
+  return <Box display="flex" justifyContent="center" my={20}>
+    <Button variant='contained' size='large' component={SignInButton} startIcon={<GithubIcon />}>
+      Sign in with Github
+    </Button>
+  </Box>
 }
