@@ -14,7 +14,8 @@ export default ({ location }) => {
     const url = `/api/github/oauth-callback${search}`
     const response = await fetch(url)
     const { token, login } = await response.json()
-    setSnackbar({ message: 'Successfully authenticated', severity: 'success' })
+    const message = search.indexOf('installation_id') > -1 ? 'Successfully installed app' : 'Successfully authenticated'
+    setSnackbar({ message, severity: 'success' })
     dispatch({
       type: 'GITHUB_SIGN_IN',
       payload: { token, username: login }
