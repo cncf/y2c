@@ -31,7 +31,7 @@ export default () => {
         <Router history={history}>
           <CssBaseline/>
           <NavBar/>
-          <Snackbar open={snackbar.message} autoHideDuration={5000} onClose={() => setSnackbar({})}>
+          <Snackbar open={!!snackbar.message} autoHideDuration={5000} onClose={() => setSnackbar({})}>
             <Alert severity={snackbar.severity} variant="filled">{snackbar.message}</Alert>
           </Snackbar>
           <Container>
