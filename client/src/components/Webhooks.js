@@ -14,7 +14,7 @@ export default () => {
   const [webhooks, setWebhooks] = useState([])
 
   return <Box marginY={3}>
-    <Typography component='h1' variant='h4'>Installations</Typography>
+    <Typography component='h1' variant='h4'>Webhooks</Typography>
     <Box mt={2}>
       <Loader url="/api/webhooks" data={webhooks} callback={setWebhooks}>
         <TableContainer component={Paper}>
