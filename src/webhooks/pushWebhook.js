@@ -1,5 +1,5 @@
 const { google } = require('googleapis/build/src/index')
-const datastore = require('datastore')
+const db = require('db')
 
 const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/calendar']
@@ -43,10 +43,15 @@ module.exports = async ({ payload, log }) => {
     return
   }
 
-  const key = datastore.key('Webhook')
-  const data = { repo: payload.repository.full_name, created_at: (new Date()).toISOString() }
+  const pushes = db.collection('pushes')
+  const { repository, installation } = payload
+  const data = {
+    repo: repository.full_name,
+    installation_id: installation.id,
+    created_at: (new Date()).toISOString()
+  }
 
-  await datastore.insert({ key, data })
+  await pushes.add(data)
 
   log.warn("Changed y2c files: ", changed_y2c)
 }

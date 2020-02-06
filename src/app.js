@@ -1,9 +1,10 @@
 const path = require('path')
 const { homeRouter, googleRouter, githubRouter } = require('routers')
-const { pushWebhook } = require('webhooks')
+const { pushWebhook, installationWebhook } = require('webhooks')
 
 module.exports = app => {
   app.on('push', pushWebhook)
+  app.on('installation', installationWebhook)
 
   const apiRouter = app.route('/api')
 

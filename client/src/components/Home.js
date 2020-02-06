@@ -29,9 +29,9 @@ export default () => {
               </TableHead>
               <TableBody>
                 {
-                  installations.map(({ id, account }) => (
-                    <TableRow key={`installation/${id}`}>
-                      <TableCell><a href={`https://github.com/${account.login}`}>{account.login}</a></TableCell>
+                  installations.map(({ name, installation_id }) => (
+                    <TableRow key={`installation/${installation_id}`}>
+                      <TableCell><a href={`https://github.com/${name}`}>{name}</a></TableCell>
                       <TableCell />
                     </TableRow>
                   ))

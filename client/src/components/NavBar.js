@@ -14,11 +14,16 @@ export default () => {
     <Link {...props} ref={ref} to='#' onClick={() => dispatch({ type: 'LOG_OUT' })} />
   ))
 
+  const HomeLink = forwardRef((props, ref) => (
+    <Link {...props} ref={ref} to='/'/>
+  ))
 
   return <AppBar position="static">
     <Toolbar>
       <Box flexGrow={1}>
-        <Typography variant="h6">Y2C</Typography>
+        <Button color='inherit' component={HomeLink}>
+          <Typography variant="h6">Y2C</Typography>
+        </Button>
       </Box>
       {username ? <Typography>{username}</Typography> : null}
       {username ? <Button color='inherit' component={LogOutLink}>Log Out</Button> : null}
