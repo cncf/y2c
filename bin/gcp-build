@@ -2,7 +2,7 @@
 
 set -e
 
-BUCKET=cncf-y2c.appspot.com
+BUCKET=y2c-v1.appspot.com
 FOLDER=$(date +%s)
 PUBLIC_URL=https://storage.googleapis.com/$BUCKET/$FOLDER
 
