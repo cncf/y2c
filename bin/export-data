@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const firestore = require('../src/db')
+const fs = require('fs')
+
+let data = {}
+
+const fetchData = async () => {
+  const collections = await firestore.listCollections()
+  for (let collection of collections) {
+    data[collection.id] = {}
+    const docs = await collection.get()
+    docs.forEach(doc => data[collection.id][doc.id] = doc.data())
+  }
+
+  fs.writeFileSync('tmp/data.json', JSON.stringify(data))
+}
+
+fetchData()

@@ -14,10 +14,11 @@
     "probot-app"
   ],
   "scripts": {
-    "dev": "concurrently --kill-others \"yarn run datastore:start\" \"nodemon\" \"sleep 5 && yarn run client:dev\"",
-    "client:dev": "./bin/set-client-env && cd client && yarn start",
+    "dev": "concurrently --kill-others-on-fail \"yarn run datastore:start\" \"yarn run datastore:load\" \"nodemon\" \"yarn run client:dev\"",
+    "client:dev": "./bin/wait-for localhost:4000 && ./bin/set-client-env && cd client && yarn start",
     "client:build": "./bin/set-client-env && cd client && yarn install && yarn run build",
-    "datastore:start": "gcloud beta emulators firestore start --host-port=0.0.0.0:8081 --project=cncf-y2c",
+    "datastore:start": "gcloud beta emulators firestore start --host-port=0.0.0.0:8081",
+    "datastore:load": "./bin/wait-for localhost:8081 && ./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
     "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
     "test": "jest && standard",
@@ -54,7 +55,8 @@
     "exec": "yarn start",
     "ignore": [
       "node_modules/",
-      "client/"
+      "client/",
+      "tmp/"
     ]
   },
   "jest": {

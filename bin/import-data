@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+// TODO: finish up importing/exporting data
+
+require('dotenv').config()
+const db = require('../src/db')
+const fs = require('fs')
+
+const importData = async () => {
+  let data = JSON.parse(fs.readFileSync('tmp/data.json', 'utf8'))
+  let batch = db.batch();
+
+  for (let key in data) {
+    const items = data[key]
+
+    for (let id in items) {
+      const item = items[id]
+      const ref = db.doc(`${key}/${id}`)
+      batch.set(ref, item)
+    }
+  }
+
+  await batch.commit()
+}
+
+importData()
