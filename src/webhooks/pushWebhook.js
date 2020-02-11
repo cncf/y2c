@@ -1,9 +1,9 @@
-const { google } = require('googleapis/build/src/index')
+// const { google } = require('googleapis/build/src/index')
 const db = require('db')
 
-const auth = new google.auth.GoogleAuth({
-  scopes: ['https://www.googleapis.com/auth/calendar']
-});
+// const auth = new google.auth.GoogleAuth({
+//   scopes: ['https://www.googleapis.com/auth/calendar']
+// })
 
 // const serviceAccountAuthClient = await auth.getClient()
 // serviceAccountAuthClient.subject = 'admin@deploydemo.xyz'
@@ -34,11 +34,11 @@ module.exports = async ({ payload, log }) => {
     return
   }
 
-  const { head_commit } = payload
-  const changed_files = [...head_commit.added, ...head_commit.removed, ...head_commit.modified]
-  const changed_y2c = changed_files.find((file) => file.split('/').pop() === 'y2c.yml')
+  const headCommit = payload.head_commit
+  const changedFiles = [...headCommit.added, ...headCommit.removed, ...headCommit.modified]
+  const changedY2c = changedFiles.find((file) => file.split('/').pop() === 'y2c.yml')
 
-  if (changed_y2c.length === 0) {
+  if (changedY2c.length === 0) {
     log.warn('No y2c files changed. IGNORING')
     return
   }
@@ -53,7 +53,5 @@ module.exports = async ({ payload, log }) => {
 
   await pushes.add(data)
 
-  log.warn("Changed y2c files: ", changed_y2c)
+  log.warn('Changed y2c files: ', changedY2c)
 }
-
-

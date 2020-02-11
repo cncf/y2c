@@ -16,7 +16,7 @@ router.get('/oauth-callback', async (req, res) => {
   oauthClient.setCredentials(tokens)
   const people = google.people({ version: 'v1', auth: oauthClient })
   const peopleResponse = await people.people.get({ resourceName: 'people/me', personFields: 'emailAddresses' })
-  const primaryAddress = peopleResponse.data.emailAddresses.find(({metadata}) => metadata.primary)
+  const primaryAddress = peopleResponse.data.emailAddresses.find(({ metadata }) => metadata.primary)
   res.send({ email: primaryAddress.value })
 })
 
