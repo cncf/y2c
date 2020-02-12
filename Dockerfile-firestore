@@ -1,0 +1,5 @@
+FROM google/cloud-sdk:latest
+
+RUN apt-get install -y google-cloud-sdk-firestore-emulator
+
+CMD gcloud beta emulators firestore start --host-port=0.0.0.0:8081
