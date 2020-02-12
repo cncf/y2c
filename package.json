@@ -21,8 +21,7 @@
     "datastore:load": "./bin/wait-for localhost:8081 && ./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
     "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
-    "test": "jest && standard",
-    "test:watch": "jest --watch --notify --notifyMode=change --coverage",
+    "test": "concurrently -k \"yarn run datastore:start > /dev/null 2>&1 || true \" \"NODE_PATH=./src jest && standard\"",
     "gcp-build": "./bin/gcp-build",
     "deploy": "gcloud app deploy appengine.yml --quiet"
   },
@@ -60,7 +59,8 @@
     ]
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globalSetup": "./test/setup.js"
   },
   "exports": {}
 }
