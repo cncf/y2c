@@ -2,4 +2,4 @@
 
 set -eu
 
-docker-compose run app yarn run test
+docker-compose exec app yarn run test
