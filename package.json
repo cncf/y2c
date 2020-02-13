@@ -17,7 +17,7 @@
     "dev": "concurrently --kill-others-on-fail \"yarn run datastore:load\" \"nodemon\" \"yarn run client:dev\"",
     "client:dev": "./bin/set-client-env && cd client && yarn start",
     "client:build": "./bin/set-client-env && cd client && yarn install && yarn run build",
-    "datastore:load": "./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
+    "datastore:load": "./bin/wait-for $FIRESTORE_EMULATOR_HOST && ./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
     "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
     "test": "NODE_PATH=./src jest && standard --fix",
