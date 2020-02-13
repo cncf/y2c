@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 require('dotenv').config()
-const firestore = require('../src/db')
+const db = require('../src/db')
 const fs = require('fs')
 
 let data = {}
 
 const fetchData = async () => {
-  const collections = await firestore.listCollections()
+  const collections = await db.listCollections()
   for (let collection of collections) {
     data[collection.id] = {}
     const docs = await collection.get()

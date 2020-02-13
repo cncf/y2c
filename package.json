@@ -20,7 +20,7 @@
     "datastore:load": "./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
     "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
-    "test": "NODE_PATH=./src jest && standard",
+    "test": "NODE_PATH=./src jest && standard --fix",
     "gcp-build": "./bin/gcp-build",
     "deploy": "gcloud app deploy appengine.yml --quiet"
   },
