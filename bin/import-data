@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-// TODO: finish up importing/exporting data
-
 require('dotenv').config()
 const db = require('../src/db')
 const fs = require('fs')
