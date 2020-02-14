@@ -20,7 +20,7 @@
     "datastore:load": "./bin/wait-for $FIRESTORE_EMULATOR_HOST && ./bin/import-data && while true; do ./bin/export-data ; sleep 60; done",
     "start": "NODE_PATH=./src probot run ./src/app.js",
     "lint": "standard --fix",
-    "test": "NODE_PATH=./src jest && standard --fix",
+    "test": "NODE_PATH=./src jest --runInBand && standard --fix",
     "gcp-build": "./bin/gcp-build",
     "deploy": "gcloud app deploy appengine.yml --quiet"
   },
@@ -36,7 +36,8 @@
     "nock": "^11.4.0",
     "nodemon": "^2.0.0",
     "smee-client": "^1.1.0",
-    "standard": "^14.3.1"
+    "standard": "^14.3.1",
+    "supertest": "^4.0.2"
   },
   "engines": {
     "node": ">=10.0.0"

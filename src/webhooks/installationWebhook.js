@@ -17,6 +17,8 @@ module.exports = async ({ payload, log }) => {
     })
   } else if (action === 'deleted') {
     const result = await installations.where('installation_id', '==', installation.id).get()
-    await result.docs.forEach(doc => doc.ref.delete())
+    for (const doc of result.docs) {
+      await doc.ref.delete()
+    }
   }
 }
