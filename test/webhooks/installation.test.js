@@ -13,7 +13,7 @@ describeWebhook('Installation Webhook', ({ probot }) => {
     }
   }
 
-  test('test we store installation when user installs app on org', async () => {
+  test('Installation is stored in DB', async () => {
     await probot.receive({ name: 'installation', payload })
     const installations = db.collection('installations')
     const result = await installations.get()
