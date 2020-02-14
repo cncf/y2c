@@ -1,38 +1,7 @@
-const nock = require('nock')
-const App = require('app')
-const { Probot } = require('probot')
-const fs = require('fs')
 const db = require('db')
+const describeWebhook = require('../support/describeWebhook')
 
-describe('My Probot app', () => {
-  let probot
-  let mockCert
-
-  const truncateDb = async () => {
-    const collections = await db.listCollections()
-    const batch = db.batch()
-    for (const collection of collections) {
-      const result = await collection.get()
-      result.docs.forEach(doc => batch.delete(doc.ref))
-    }
-    await batch.commit()
-  }
-
-  beforeAll((done) => {
-    fs.readFile('test/fixtures/mock-cert.pem', (err, cert) => {
-      if (err) return done(err)
-      mockCert = cert
-      done()
-    })
-  })
-
-  beforeEach(async () => {
-    nock.disableNetConnect()
-    probot = new Probot({ id: 1, cert: mockCert, githubToken: 'test' })
-    probot.load(App)
-    await truncateDb()
-  })
-
+describeWebhook('Installation Webhook', ({ probot }) => {
   const payload = {
     action: 'created',
     installation: {
@@ -53,10 +22,5 @@ describe('My Probot app', () => {
     expect(installation.name).toBe('cncf')
     expect(installation.installation_id).toBe(12345)
     expect(installation.account_id).toBe(55555)
-  })
-
-  afterEach(() => {
-    nock.cleanAll()
-    nock.enableNetConnect()
   })
 })
